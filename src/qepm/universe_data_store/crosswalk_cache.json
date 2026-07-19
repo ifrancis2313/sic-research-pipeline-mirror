@@ -1,0 +1,9 @@
+{
+  "isin_to_figi": {
+    "US0000000102": "BBG-FIXTURE-003",
+    "US0000000101": "BBG-FIXTURE-017"
+  },
+  "ticker_to_figi": {
+    "SPX": "BBG-FIXTURE-014"
+  }
+}

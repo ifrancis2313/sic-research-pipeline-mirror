@@ -1,0 +1,68 @@
+[project]
+name = "qepm"
+version = "0.1.0"
+description = "SIC QEPM factor-driven equity research pipeline"
+requires-python = ">=3.11"
+dependencies = [
+    "pandas>=2.0",
+    # NumPy 2.5+ requires Python 3.12; QEPM supports Python 3.11.
+    "numpy>=1.26,<2.5",
+    "openpyxl>=3.1",
+    "pyarrow>=14.0",
+    "httpx>=0.27",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "pytest-mock>=3.14", "ruff>=0.6", "mypy>=1.11", "pip-audit>=2.7", "hypothesis>=6.100"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/qepm"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = [
+    "E501",
+    "UP042",  # str+Enum -> StrEnum changes str() output (e.g. "buy" vs "Direction.BUY");
+              # not applying without checking every str(Direction...) call site first
+]
+
+[tool.mypy]
+python_version = "3.11"
+ignore_missing_imports = true
+check_untyped_defs = true
+warn_unused_ignores = true
+exclude = ["tests/", "scripts/"]
+
+[tool.mutmut]
+# Scoped to the modules that enforce binding, real-money-relevant limits --
+# these are the ones a coverage number can't tell you are actually load-
+# bearing. Not the whole src/ tree: adapters/fixtures/gate.py schema-
+# validation code mutate mostly into either equivalent or trivially-killed
+# mutants and would just add noise to triage. Widen this list if another
+# module becomes safety-critical.
+source_paths = ["src"]
+# scripts/ isn't in mutation scope, but
+# tests/test_walking_skeleton.py::test_walking_skeleton_script_is_runnable_from_the_project_root
+# runs it as a subprocess -- needs to exist in mutmut's sandbox for that test to collect.
+also_copy = ["scripts"]
+only_mutate = [
+    "src/qepm/backtest_gate/__init__.py",
+    "src/qepm/position_sizing/__init__.py",
+    "src/qepm/governance/__init__.py",
+    "src/qepm/exposure_optimizer/__init__.py",
+    "src/qepm/scoring.py",
+    "src/qepm/factor_registry/v1.py",
+]
+pytest_add_cli_args_test_selection = ["tests"]
