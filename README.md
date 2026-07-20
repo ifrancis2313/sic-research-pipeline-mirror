@@ -1,7 +1,7 @@
 # SIC QEPM Research Pipeline (public mirror)
 
 This is a curated mirror of a factor-driven "optimal portfolio" pipeline built
-for a student investment committee's student-run equity fund — infrastructure
+for a student investment club's student-run equity fund — infrastructure
 and methodology only, not a live trading system or a results post. It exists
 to show the engineering and control-design work behind a quantemental
 (quantitative + fundamental) portfolio process: a quantitative layer that
