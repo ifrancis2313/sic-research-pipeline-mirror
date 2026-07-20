@@ -1,4 +1,4 @@
-# SIC QEPM Research Pipeline (public mirror)
+# SIC Quantemental Research Pipeline (public mirror)
 
 This is a curated mirror of a factor-driven "optimal portfolio" pipeline built
 for a student investment club's student-run equity fund — infrastructure
